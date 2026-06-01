@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ngrok Server Panel</title>
+</head>
+<body style="font-family: Arial; text-align:center;">
+
+<h1>🚀 Server Dashboard</h1>
+
+<p id="url">Loading server...</p>
+
+<button onclick="openServer()" style="padding:10px 20px;">
+Open Server
+</button>
+
+<script>
+let latestURL = "";
+
+async function fetchURL() {
+    let res = await fetch("server.json?v=" + new Date().getTime());
+    let data = await res.json();
+
+    latestURL = data.url;
+    document.getElementById("url").innerText = latestURL || "No server running";
+}
+
+function openServer() {
+    if (latestURL) {
+        window.open(latestURL, "_blank");
+    } else {
+        alert("Server not available");
+    }
+}
+
+fetchURL();
+setInterval(fetchURL, 5000); // auto refresh
+</script>
+
+</body>
+</html>
